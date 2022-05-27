@@ -1,0 +1,47 @@
+//SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.12;
+  
+contract Demo{
+    mapping(address => uint256) public balances;
+    address payable wallet; 
+    
+    constructor(address payable _wallet) public{
+        wallet = _wallet;
+    }
+
+    function buyToken() public payable{
+         balances[msg.sender] += 1; //buy token
+         wallet.transfer(msg.value);   //send ether to wallet
+        
+    }
+    
+} 
+
+
+//fallback
+//SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.5.1;
+  
+contract Demo{
+    mapping(address => uint256) public balances;
+    address payable wallet; 
+    event Purchase(
+        address _buyer,
+        uint256 _amount
+    );
+    
+    constructor(address payable _wallet) public{
+        wallet = _wallet;
+    }
+    
+    function()  external payable {
+        buyToken();
+    }
+
+    function buyToken() public payable{
+         balances[msg.sender] += 1; //buy token
+         wallet.transfer(msg.value);   //send ether to wallet
+        emit Purchase(msg.sender, 1);
+    }
+    
+} 
